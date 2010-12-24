@@ -1,0 +1,22 @@
+Name:      Hammock
+Version:   0.1
+License:   MIT
+
+Synopsis: A simple make system
+Description:
+  A simple build system using haskell.
+Author: John Lincoln Kenyon
+Maintainer: jlkenyon@gmail.com
+Cabal-Version: >= 1.8
+build-type: Simple
+
+Library
+  Exposed-Modules: Hammock
+  HS-Source-Dirs: src
+  Build-Depends:  base >= 2.0
+
+Executable testHammock
+  HS-Source-Dirs: tests
+  main-is: TestMain.hs
+  build-depends: base, test-framework
+  
