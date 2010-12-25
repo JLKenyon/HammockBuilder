@@ -27,5 +27,40 @@
 
 module Hammock where
     
-    version = "0.0.1"
+version = "0.0.1"
+
+
+--data Action = Action { input  :: FilePath
+--                     , output :: FilePath
+--                     , command :: String
+--                     }
+--              deriving(Eq, Show)
+
+data BuildSystem a = BuildSystem
+                     deriving(Show)
+
+instance Monad BuildSystem where
+    return a = BuildSystem
+    m >>= k  = BuildSystem
+
+-- --------------------------------------------------------
+
+--cpp :: FilePath -> BuildSystem String
+cpp :: String -> BuildSystem String
+cpp fname = (return fname) :: (BuildSystem String)
+
+--project :: String -> BuildSystem a -> BuildSystem String
+--project :: String -> t -> BuildSystem String
+project :: String -> BuildSystem String -> BuildSystem String
+project pname build = (return pname) :: (BuildSystem String)
+
+--exe :: String -> BuildSystem FilePath
+--exe :: String -> t -> BuildSystem String
+exe :: String -> BuildSystem String -> BuildSystem String
+exe fname build = (return fname) :: (BuildSystem String)
+
+--output_dir :: String -> BuildSystem ()
+--output_dir :: t -> BuildSystem ()
+output_dir :: String -> BuildSystem ()
+output_dir dir_name = return () :: (BuildSystem ())
 

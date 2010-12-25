@@ -25,8 +25,20 @@
   
   --}
 
-import Test.Framework (defaultMain)
+import Test.Framework (defaultMain, testGroup)
+import Test.Framework.Providers.HUnit (testCase)
+import Test.HUnit
+
+import Hammock
 
 main = defaultMain tests
 
-tests = []
+tests = [ environmentTests ]
+
+environmentTests = testGroup "Environment Testing"
+  [ testCase "Valid Version" testVersion ]
+
+
+testVersion       = assertBool "Version not reporting properly" 
+                               (Hammock.version >= "0.0.1")
+
