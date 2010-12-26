@@ -29,7 +29,7 @@ module Hammock where
 
 import System.FilePath.Posix
 import Data.List
-import Data.Set (difference, fromList, elems)
+
     
 version = "0.0.1"
 
