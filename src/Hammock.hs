@@ -23,44 +23,70 @@
   FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
   OTHER DEALINGS IN THE SOFTWARE.
   
-  --}
+--}
 
 module Hammock where
+
+import System.FilePath.Posix
     
 version = "0.0.1"
 
+data BuildConfig = CppConfig { _output_dir :: FilePath
+                             , _include_dirs :: [FilePath]
+                             , _link_dirs :: [FilePath]
+                             , _link_libs :: [String]
+                             , _defines :: [(String, String)]
+                             }
+                   deriving(Eq, Show)
+                           
+data Action = Action { _input  :: [FilePath]
+                     , _output :: [FilePath]
+                     , _configuration :: BuildConfig
+                     }
+              deriving(Eq, Show)
 
---data Action = Action { input  :: FilePath
---                     , output :: FilePath
---                     , command :: String
---                     }
---              deriving(Eq, Show)
-
-data BuildSystem a = BuildSystem
-                     deriving(Show)
-
-instance Monad BuildSystem where
-    return a = BuildSystem
-    m >>= k  = BuildSystem
+data BuildSystem a = BuildSystem { actionList :: [Action]
+                                 , __config :: BuildConfig
+                                 , value :: a
+                                 }
+                     deriving(Eq, Show)
 
 -- --------------------------------------------------------
 
---cpp :: FilePath -> BuildSystem String
-cpp :: String -> BuildSystem String
-cpp fname = (return fname) :: (BuildSystem String)
+mergeConfig :: BuildConfig -> BuildConfig -> BuildConfig
+mergeConfig lConfig rConfig = undefined
 
---project :: String -> BuildSystem a -> BuildSystem String
---project :: String -> t -> BuildSystem String
+instance Monad BuildSystem where
+    return a = BuildSystem [] emptyConfig a
+    m >>= k  = let (BuildSystem p_list p_config p_val) = m
+                   (BuildSystem n_list n_config n_val) = k p_val
+               in BuildSystem (p_list ++ n_list) (mergeConfig p_config n_config) n_val
+
+-- --------------------------------------------------------
+
+emptyConfig = CppConfig { _output_dir   = "" :: FilePath
+                        , _include_dirs = [] :: [FilePath]
+                        , _link_dirs    = [] :: [FilePath]
+                        , _link_libs    = [] :: [String]
+                        , _defines      = [] :: [(String, String)]
+                        }
+
+-- --------------------------------------------------------
+
+cpp :: String -> BuildSystem String
+cpp fname = BuildSystem [action] emptyConfig fname
+    where action = Action [fname] [(convert_to_obj fname)] emptyConfig
+          convert_to_obj :: String -> String
+          convert_to_obj = flip replaceExtension ".o"
+
 project :: String -> BuildSystem String -> BuildSystem String
 project pname build = (return pname) :: (BuildSystem String)
 
---exe :: String -> BuildSystem FilePath
---exe :: String -> t -> BuildSystem String
+
 exe :: String -> BuildSystem String -> BuildSystem String
 exe fname build = (return fname) :: (BuildSystem String)
 
---output_dir :: String -> BuildSystem ()
---output_dir :: t -> BuildSystem ()
+
 output_dir :: String -> BuildSystem ()
 output_dir dir_name = return () :: (BuildSystem ())
 
