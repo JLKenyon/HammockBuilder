@@ -13,7 +13,7 @@ build-type: Simple
 Library
   Exposed-Modules: Hammock
   HS-Source-Dirs: src
-  Build-Depends:  base >= 4.0, filepath >= 1.1
+  Build-Depends:  base >= 4.0, filepath >= 1.1, containers
 
 Executable testHammock
   HS-Source-Dirs: tests
