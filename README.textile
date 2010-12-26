@@ -1,0 +1,44 @@
+h3. HammockBuilder
+
+An experimental library for creating build systems in Haskell
+
+h4. How does it work?
+
+Well, it doesn't yet, it is still in early early development.
+
+But when it is done it will look something like this:
+
+<pre>
+<code>
+import Hammock
+main = hammockMain $ project "HelloWorld" $ do
+         output_dir "bin"
+         exe "simple_01" $ do
+           cpp "src/main.cpp"
+           cpp "src/bar.cpp"
+         exe "simple_foo" $ do
+           cpp "src/foo.cpp
+</code>
+</pre>
+
+h4. Does the world really need this?
+
+Yes! Well, no, probably not. At the very least it probably won't do too much damage.
+
+I became motivated to start playing with build systems after CMake started to gain traction.  The reason is that I dislike CMake, but less than I dislike Autotools.  But it inspired me start making Hammock, in the faint hope that it will help improve the state of build systems.
+
+Will this make a difference? It might if my observations about the psychology of the open source world are correct. The open source community tends to have a sort of delayed-amplified-echo effect. A single vital tool, such as source control or web a framework, will sit as the single and sole system for a long time. After a while, someone realizes how terrible this outdated system is and creates a new one.  This causes a massive surge of interest in that sub field for a while, and after a short period, a massive explosion of new tools and libraries burst onto the scene.
+
+Look at version control. CVS was king for a long time, and it was terrible. People didn't realize how terrible until Subversion came along and replaced it across the board.  But in the wake of SVN, we got a population boom: Git, Mercurial, Bazaar, Fossil, Darcs.  Each generation improving upon the previous ones.  Now look at the web. For quite a while, Perl/CGI was all we had.  Then PHP came out, and it changed everything, flawed as it was.  And recently, an explosion: Rails, Django, Lift, Node.js, Aleph, Cake and a hundred others.
+
+I am hoping that this pattern is starting again, this time with build systems. I think that CMake might be the Subversion or PHP of build systems, a bright but flawed spark that ignites the attention and creativity of the open source community.  And I am going to do everything I can to fan those flames. HammockBuilder is my first breath.
+
+* Note: I am aware that I am not the first or only person working on a build system, and in the above examples are not listed in chronological order.  Rather they are listed in the order that I observed them rise to prominence, which is subjective.
+
+h4. Anything else?
+
+I have been struggling with Monads.  I needed a problem which was easy enough that I could solve it, but non-trivial enough that I could really explore it.  It just so happened that this problem fit the bill.  I suppose in Haskell style I should call this a "Monadic Build System."
+
+h4. Is this the end-all be all of build systems?
+
+Absolutely not, it is a small stepping stone which will hopefully show of one or two neat ideas.  I wouldn't really expect a Haskell based library to take off anyway, not while Python and C are so widely supported.  I am already planning my next version, either Python or C/Lua based, which should be even more exciting.  But one step at a time.
